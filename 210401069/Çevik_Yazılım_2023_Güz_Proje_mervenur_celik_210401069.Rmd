@@ -1,0 +1,10 @@
+---
+title: 'Proje Rapor : Merve Nur Çelik 210401069'
+output: html_document
+---
+
+
+# Q1 : Problem tanımı
+
+Şirketimizin **UMBRELLA BANKASI** müşteri kaybı yaşıyor. Müşterilerimiz kredi kartlarının kapatılmasını sıklıkla talep ediyor. Bu durumun önüne 
+geçebilmek ve müşterilere yeni teklifler yapabilmek istiyoruz.
