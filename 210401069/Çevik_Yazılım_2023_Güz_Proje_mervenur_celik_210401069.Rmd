@@ -397,3 +397,114 @@ Bu sentetik değişken, müşterilerin kredi kartı kullanma sıklığını tems
 head(myDF$Credit_Card_Usage_Frequency, 10)
 ```
 
+
+
+# Q6 : Veri analizi
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Kütüphanenin eklenmesi 
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+# Veri Setinin Yüklenmesi
+filename <- "Bank.csv"
+path <- file.path("~/Bank.csv")
+myDF <- readr::read_csv(path)
+
+
+```
+# Gelir seviyelerini analiz ederek teklif stratejileri belirleme
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+income_offer_strategy <- function(income_category) {
+  if (income_category == "$60K - $80K") {
+    return("Yıllık ücret muafiyeti, %0 faiz oranı ve ekstra nakit puan")
+  } else if (income_category == "$80K - $120K") {
+    return("Yıllık ücret muafiyeti, düşük faiz oranı ve seyahat avantajları")
+  } else if (income_category == "Less than $40K") {
+    return("Düşük faiz oranı, ekstra nakit puan ve online alışveriş indirimleri")
+  } else if (income_category == "$120K +") {
+    return("Özel ayrıcalıklar, yüksek limit ve seyahat avantajları")
+  } else {
+    return("Standart kart teklifi")
+  }
+}
+
+# Yaş gruplarına göre ek avantajlar belirleme
+age_offer_strategy <- function(age) {
+  if (age < 30) {
+    return("Genç müşteri avantajları: Konser indirimleri, gençlik etkinlikleri")
+  } else if (age >= 30 & age < 50) {
+    return("Orta yaş avantajları: Sağlık sigortası, aile indirimleri")
+  } else {
+    return("Yaşlı müşteri avantajları: Seyahat avantajları, emeklilik planları")
+  }
+}
+
+
+# Müşterilere özel kart teklifleri oluşturma
+personalized_offers <- data.frame(
+  CustomerID = character(),
+  OfferDescription = character(),
+  stringsAsFactors = FALSE
+)
+
+# Örnek kriterlere göre teklif oluşturma
+for (i in 1:nrow(myDF)) {
+  if (myDF$Customer_Age[i] >= 18 & myDF$Customer_Age[i] <= 25) {
+    personalized_offers <- rbind(personalized_offers, data.frame(CustomerID = myDF$CLIENTNUM[i], OfferDescription = "Gençler için Özel Teklif"))
+  }
+
+  if (myDF$Education_Level[i] == "Doctorate" | myDF$Education_Level[i] == "Post-Graduate") {
+    personalized_offers <- rbind(personalized_offers, data.frame(CustomerID = myDF$CLIENTNUM[i], OfferDescription = "Doktora ve Yüksek Lisans Mezunları için Özel Teklif"))
+  }
+
+  # Diğer eğitim seviyelerine yönelik teklifler
+  if (myDF$Education_Level[i] == "High School") {
+    personalized_offers <- rbind(personalized_offers, data.frame(CustomerID = myDF$CLIENTNUM[i], OfferDescription = "Lise Mezunları için Özel Teklif"))
+  } else if (myDF$Education_Level[i] == "Graduate") {
+    personalized_offers <- rbind(personalized_offers, data.frame(CustomerID = myDF$CLIENTNUM[i], OfferDescription = "Lisans Mezunları için Özel Teklif"))
+  }
+}
+
+# Elde edilen teklifleri göster
+head(personalized_offers)
+
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# Gelir seviyelerine göre özel teklif sayılarını hesapla
+offer_counts <- table(personalized_offers$OfferDescription)
+
+# Grafik oluşturma
+ggplot(data = data.frame(OfferDescription = names(offer_counts), Count = as.numeric(offer_counts)), 
+       aes(x = OfferDescription, y = Count, fill = OfferDescription)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Gelir Seviyelerine Göre Özel Teklif Dağılımı",
+       x = "Özel Teklif Türü",
+       y = "Teklif Sayısı") +
+  theme_minimal()
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# Müşteri özel tekliflerinin detay analizi
+details_counts <- table(
+  Age_Group = cut(myDF$Customer_Age, breaks = c(0, 30, 50, max(myDF$Customer_Age)), labels = c("18-30", "31-50", "51+")),
+  Education_Level = myDF$Education_Level,
+  Income_Category = myDF$Income_Category
+)
+
+# Grafik oluşturma
+ggplot(data = as.data.frame(details_counts), aes(x = Age_Group, y = Freq, fill = Education_Level)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Müşterilere Verilen Özel Tekliflerin Detay Analizi",
+       x = "Yaş Grubu",
+       y = "Teklif Sayısı",
+       fill = "Eğitim Seviyesi") +
+  theme_minimal()
+
+```
+
