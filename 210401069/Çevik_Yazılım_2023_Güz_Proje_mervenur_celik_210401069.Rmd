@@ -8,3 +8,184 @@ output: html_document
 
 Şirketimizin **UMBRELLA BANKASI** müşteri kaybı yaşıyor. Müşterilerimiz kredi kartlarının kapatılmasını sıklıkla talep ediyor. Bu durumun önüne 
 geçebilmek ve müşterilere yeni teklifler yapabilmek istiyoruz.
+
+
+# Q2 : Proje Amacı
+[Banka Müşterileri](https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers) adlı kaggle veri setini kullanarak iş problemini müşteri demografik verileri, gelir düzeyi, eğitim seviyeleri ve diğer ilgili faktörleri inceleyerek müşteri profillerini oluşturmak üzere yaş, gelir, kredi kartı türü gibi özelliklere göre segmentasyon yaparak ayrılma oranlarını analiz etmek istiyoruz. Bu analizlerle beraber müşterilere ayrılmamalarını sağlayacak kart teklifleri sunacağız. Müşteri kaybı ve kredi kartı kullanımından vazgeçilmesi durumunu azaltmak istiyoruz . Böylece bankamızın kârını arttırmayı planlıyoruz. 
+
+
+# Q3 : Veri seti keşifsel analizi 
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Kütüphanenin eklenmesi 
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+# Veri Setinin Yüklenmesi
+filename <- "Bank.csv"
+path <- file.path("~/Bank.csv")
+myDF <- readr::read_csv(path)
+
+
+```
+
+
+    Veri seti Kaggle web sitesinden indirilmiş ve readr::read_csv() fonksiyonu kullanılarak bir veri çerçevesine (myDF) yüklenmiştir.
+ 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+myDF
+```
+ Veri setinin ilk birkaç satırı ekrana yazdırılmıştır.
+
+  Veri seti Kaggle web sitesinden indirilmiştir ve **readr::read_csv()** fonksiyonu kullanılarak **`r class(myDF)[[1]]`** tipinde bir değişkene ithal edilmiştir. Veri boyutları aşağıdaki gibidir :
+
+- Satir sayisi : `r nrow(myDF)`
+- Sutün sayisi : `r ncol(myDF)`
+
+Veri setinin ön görsellemesi aşağıda verilmiştir.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+myDF
+```
+
+    Veri tipleri numeric ve character olarak değişmektedir. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+```
+
+### Önemli Satırlar ve Sütunlar
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# Kaggle platformunda paylaşılan bir veri setidir.
+
+# Önemli Satırlar ve Sütunlar
+important_columns <- c("CLIENTNUM", "Attrition_Flag", "Customer_Age", "Gender", 
+                        "Dependent_count", "Education_Level", "Marital_Status", 
+                        "Income_Category", "Card_Category", "Months_on_book", 
+                        "Total_Relationship_Count", "Months_Inactive_12_mon", 
+                        "Contacts_Count_12_mon", "Credit_Limit", 
+                        "Total_Revolving_Bal", "Avg_Open_To_Buy")
+
+important_data <- myDF[, important_columns]
+
+
+```
+
+    Analizde kullanılacak olan önemli sütunlar belirlenmiş ve bu sütunlara ait veriler important_data isimli bir veri çerçevesine atanmıştır.
+
+### Eksik veri kontrolü
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Problemler, Eksik Veriler ve Yanlış/Manasız Veriler
+missing_data <- colSums(is.na(important_data))
+print(missing_data)
+
+```
+
+    important_data veri çerçevesinde eksik veri kontrolü yapılmış ve her sütundaki eksik veri sayıları gösterilmiştir. Görüldüğü üzere eksik veri bulunmamaktadır.
+
+
+### Yaş Dağılımı Histogramı
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+ggplot(myDF, aes(x = Customer_Age)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black", alpha = 0.7) +
+  labs(title = "Yaş Dağılımı", x = "Yaş", y = "Frekans") +
+  theme_minimal()
+
+```
+
+    Müşterilerin yaşlarının dağılımını gösteren bir histogramdır.
+
+### Cinsiyete Göre Dağılım
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+ggplot(myDF, aes(x = Gender, fill = Gender)) +
+  geom_bar() +
+  labs(title = "Cinsiyete Göre Dağılım", x = "Cinsiyet", y = "Frekans") +
+  theme_minimal()
+
+```
+
+    Müşteri cinsiyetlerine göre dağılımı gösteren bir bar grafiğidir.
+
+### Eğitim Seviyesine Göre Dağılım
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+ggplot(myDF, aes(x = Education_Level, fill = Education_Level)) +
+  geom_bar() +
+  labs(title = "Eğitim Seviyesine Göre Dağılım", x = "Eğitim Seviyesi", y = "Frekans") +
+  theme_minimal()
+```
+
+    Müşteri eğitim seviyelerine göre dağılımı gösteren bir bar grafiği.
+
+### Kredi Kartı Kategorilerine Göre Dağılım
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+ggplot(myDF, aes(x = Card_Category, fill = Card_Category)) +
+  geom_bar() +
+  labs(title = "Kredi Kartı Kategorilerine Göre Dağılım", x = "Kredi Kartı Kategorisi", y = "Frekans") +
+  theme_minimal()
+```
+
+    Kredi kartı kategorilerine göre müşteri dağılımını gösteren bir bar grafiği.
+
+### Müşteri Attrition Durumu
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(myDF, aes(x = Attrition_Flag, fill = Attrition_Flag)) +
+  geom_bar() +
+  labs(title = "Müşteri Attrition Durumu", x = "Attrition Durumu", y = "Frekans") +
+  theme_minimal()
+
+
+```
+
+    Müşteri attrition durumunu gösteren bir bar grafiği.
+
+### Gelir Kategorisi ve Cinsiyet Dağılımı
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+ggplot(myDF, aes(x = Income_Category, fill = Gender)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Gelir Kategorisi ve Cinsiyet Dağılımı", x = "Gelir Kategorisi", y = "Frekans", fill = "Cinsiyet") +
+  theme_minimal()
+```
+
+    Gelir kategorisi ve cinsiyetin kombinasyonuna göre müşteri dağılımını gösteren bir bar grafiği.
+
+### Gelir Kategorisi ve Kart Türü Dağılımı
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+ggplot(myDF, aes(x = Income_Category, fill = Card_Category)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Gelir Kategorisi ve Kart Türü Dağılımı", x = "Gelir Kategorisi", y = "Frekans", fill = "Kart Türü") +
+  theme_minimal()
+
+```
+
+    Gelir kategorisi ve kart türünün kombinasyonuna göre müşteri dağılımını gösteren bir bar grafiği.
+
+
+### Yaşa Göre Gelir Kategorisi Nokta Grafikleri
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(important_data, aes(x = Income_Category, y = Customer_Age, color = Income_Category)) +
+  geom_point(position = position_jitter(h = 0.2, w = 0.3), alpha = 0.7, size = 2) +
+  stat_summary(fun = "mean", geom = "point", shape = 18, size = 3, color = "black") +
+  labs(title = "Yaşa Göre Gelir Kategorisi Nokta Grafikleri", x = "Gelir Kategorisi", y = "Yaş") +
+  theme_minimal()
+```
+
+    Yaşa göre gelir kategorisinin nokta grafikleri, her bir kategorinin ortalama yaşını da gösterir.
