@@ -508,3 +508,36 @@ ggplot(data = as.data.frame(details_counts), aes(x = Age_Group, y = Freq, fill =
 
 ```
 
+# Q7 : Sonuç değerlendirme, tavsiyeler
+
+Proje kapsamında gerçekleştirilen analizler ve elde edilen sonuçlar, müşteri sadakatini ve özel teklif stratejilerini geliştirmek üzere önemli bir adımı temsil etmektedir. Ancak, bu sonuçların geçerliliği ve kullanılabilirliği üzerinde birkaç değerlendirme yapılabilir.
+
+1. Analizin Mantıklılığı:
+Analizler, müşteri profilini ve özel teklif stratejilerini belirlemek amacıyla doğru ve mantıklı bir yaklaşımla yapılmıştır. Gelir seviyeleri, yaş grupları ve eğitim seviyeleri gibi faktörler müşteri segmentasyonunda başarılı bir şekilde kullanılmıştır. Özel teklif stratejileri, müşteri gruplarına uygun bir şekilde tasarlanmıştır.
+
+2. Ana Problemin Çözümü:
+Projenin ana problemi olan müşteri sadakatinin artırılması ve özel tekliflerin müşteriye özelleştirilmesi konularında, yapılan analizler ve önerilen teklif stratejileri olumlu bir etki yaratmaktadır. Müşteri segmentasyonu sayesinde daha hedefli ve etkili özel tekliflerin sunulması mümkün hale gelmiştir.
+
+3. Müşteri Kullanımı:
+Elde edilen sonuçlar, şirketin müşterilerine daha kişiselleştirilmiş teklifler sunması ve bu sayede müşteri memnuniyetini ve sadakatini artırması adına değerli bir kaynak sunmaktadır. Müşteriler, kendilerine özel avantajlarla tekliflere daha olumlu yanıt verebilir ve şirketle olan ilişkilerini güçlendirebilir.
+
+4. Analizin Güçlü ve Zayıf Yanları:
+Güçlü Yönler:
+
+    Müşteri segmentasyonu başarılı bir şekilde yapılmıştır.
+    Özel teklif stratejileri, gelir seviyeleri, yaş grupları ve eğitim seviyelerine göre etkili bir şekilde özelleştirilmiştir.
+    Veri analizi ve görselleştirmeler, anlaşılır ve kullanıcı dostu bir şekilde sunulmuştur.
+
+Zayıf Yönler:
+
+    Analizlerde kullanılan veri setinin sınırlı olması, genel geçerliliği kısıtlayabilir.
+    Müşteri memnuniyeti ve sadakati üzerindeki etkinin izlenmesi ve ölçülmesi için daha fazla geri bildirim mekanizması eklenmesi faydalı olabilir.
+
+5. İyileştirme Tavsiyeleri:
+
+    Daha geniş kapsamlı bir veri seti kullanılarak analizlerin genel geçerliliği artırılabilir.
+    Analiz sonuçlarına dayalı olarak bir geri bildirim mekanizması oluşturulabilir ve müşteri tepkileri sürekli olarak izlenerek stratejiler güncellenebilir.
+    Sosyal medya ve müşteri görüşleri gibi dış veri kaynakları da analize dahil edilerek daha kapsamlı bir müşteri profilinin oluşturulması sağlanabilir.
+
+Sonuç olarak, proje, müşteri sadakatini ve özel teklif stratejilerini geliştirmek adına önemli bir temel oluşturmuştur. Ancak, sürekli iyileştirme ve güncelleme ihtiyacını göz önünde bulundurarak, analizlerin ve stratejilerin zaman içinde revize edilmesi önemlidir.
+
