@@ -8,3 +8,9 @@ output: html_document
 
 Şirketimizin **UMBRELLA BANKASI** müşteri kaybı yaşıyor. Müşterilerimiz kredi kartlarının kapatılmasını sıklıkla talep ediyor. Bu durumun önüne 
 geçebilmek ve müşterilere yeni teklifler yapabilmek istiyoruz.
+
+
+# Q2 : Proje Amacı
+[Banka Müşterileri](https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers) adlı kaggle veri setini kullanarak iş problemini müşteri demografik verileri, gelir düzeyi, eğitim seviyeleri ve diğer ilgili faktörleri inceleyerek müşteri profillerini oluşturmak üzere yaş, gelir, kredi kartı türü gibi özelliklere göre segmentasyon yaparak ayrılma oranlarını analiz etmek istiyoruz. Bu analizlerle beraber müşterilere ayrılmamalarını sağlayacak kart teklifleri sunacağız. Müşteri kaybı ve kredi kartı kullanımından vazgeçilmesi durumunu azaltmak istiyoruz . Böylece bankamızın kârını arttırmayı planlıyoruz. 
+
+
