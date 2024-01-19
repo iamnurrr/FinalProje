@@ -246,3 +246,154 @@ head(myDF)
 
 ```
 
+# Q5: Veri analizi 
+
+### Gelir segmentleri ve kredi kartı türleri arasındaki ilişkiyi görselleştirme
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(myDF, aes(x = Income_Category, fill = Card_Category)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Gelir Segmentleri ve Kredi Kartı Türleri Dağılımı", x = "Gelir Kategorisi", y = "Frekans", fill = "Kredi Kartı Türü") +
+  theme_minimal()
+
+```
+    
+    Bu grafik, gelir segmentleri ve kredi kartı türleri arasındaki ilişkiyi görselleştirir.
+    X ekseni gelir kategorilerini, Y ekseni frekansı ve renk ise kredi kartı türünü temsil eder.
+    
+### Kredi Limiti Dağılımı
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(myDF, aes(x = Credit_Limit)) +
+  geom_histogram(binwidth = 1000, fill = "orange", color = "black") +
+  labs(title = "Kredi Limiti Dağılımı", x = "Kredi Limiti", y = "Frekans") +
+  theme_minimal()
+
+
+```
+   
+    Bu histogram, müşterilerin kredi limitlerinin genel dağılımını gösterir.
+    X ekseni kredi limitini, Y ekseni frekansı temsil eder.
+    
+### Müşteri yaş grupları oluşturma
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+myDF$Age_Group <- cut(myDF$Customer_Age, breaks = c(0, 30, 40, 50, 60, Inf), labels = c("0-30", "31-40", "41-50", "51-60", "60+"))
+
+
+```
+ 
+    Burada müşteri yaş grupları kategorize edilmiştir.
+  
+### Her bir yaş grubu için "Credit_Limit" değişkeninin analizi
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+credit_limit_by_age_group <- myDF %>%
+  group_by(Age_Group) %>%
+  summarise(mean_credit_limit = mean(Credit_Limit, na.rm = TRUE))
+
+print(credit_limit_by_age_group)
+```
+
+    Bu analiz, müşterilerin yaş gruplarına göre kredi limitlerinin ortalama değerlerini gösterir.
+    Her yaş grubunun kredi limitini temsil eden bir tablo sunulmuştur.
+
+
+### Ortalama Kredi Limiti Hesaplama ve Değerlendirme
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+mean_credit_limit <- mean(myDF$Credit_Limit, na.rm = TRUE)
+cat("Ortalama Kredi Limiti:", mean_credit_limit, "\n")
+
+
+```
+
+    Bu işlem, tüm müşterilerin ortalama kredi limitini hesaplar ve ekrana yazdırır.
+
+### Kredi Kartı Türlerine Göre Kredi Limiti Ortalaması
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+credit_limit_by_card_category <- myDF %>%
+  group_by(Card_Category) %>%
+  summarise(mean_credit_limit = mean(Credit_Limit, na.rm = TRUE))
+
+print(credit_limit_by_card_category)
+```
+  
+    Bu analiz, kredi kartı türlerine göre kredi limitlerinin ortalama değerlerini gösterir.
+    Her kredi kartı türünün kredi limitini temsil eden bir tablo sunulmuştur.
+
+### Gelir segmenti bazında toplam Döner bakiye histogram ve ortalama
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(myDF, aes(x = Total_Revolving_Bal, fill = Income_Category)) +
+  geom_histogram(binwidth = 500, position = "dodge") +
+  labs(title = "Gelir Segmentine Göre Toplam Döner Bakiye Dağılımı", x = "Total_Revolving_Bal", y = "Frekans", fill = "Gelir Kategorisi") +
+  theme_minimal()
+
+```
+   
+    Bu histogram, gelir segmentlerine göre müşterilerin toplam döner bakiyelerini gösterir.
+    X ekseni toplam döner bakiyeyi, Y ekseni frekansı ve gelir segmentini temsil eder.
+    
+### Eğitim Seviyesi ve Medeni Durum Analizi
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+education_marital_analysis <- myDF %>%
+  group_by(Education_Level, Marital_Status) %>%
+  summarise(count = n())
+
+print(education_marital_analysis)
+```
+   
+    Bu analiz, müşterilerin eğitim seviyelerine ve medeni durumlarına göre sayıları gösterir.
+    Eğitim seviyeleri ve medeni durumları içeren bir tablo sunulmuştur.
+
+### Sentetik olarak "Kredi Kartı Kullanma Sıklığı" oluşturma
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(123)  # Rassal sayıların tekrarlanabilirliği için seed ayarı
+myDF$Credit_Card_Usage_Frequency <- rnorm(nrow(myDF), mean = 10, sd = 5)
+
+
+```
+   
+    Bu sentetik değişken, müşterilerin kredi kartı kullanma sıklığını simüle etmek amacıyla oluşturulmuştur.
+    Rassal sayılar kullanılarak elde edilmiş ve olumsuz değerler sıfıra çevrilmiştir.
+    İlk 10 satırı gösteren bir liste sunulmuştur.
+
+### Olumsuz değerleri sıfıra çevirme
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+myDF$Credit_Card_Usage_Frequency[myDF$Credit_Card_Usage_Frequency < 0] <- 0
+
+```
+            
+    Burada Credit_Card_Usage_Frequency değeri için 0'dan küçük değerler 0'a çevirilir.
+
+### Yeni sentetik değişkeni gösterme
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+head(myDF)
+
+```
+
+  Eklenti yapılan sentetik değişken "Kredi Kartı Kullanma Sıklığı **(Credit_Card_Usage_Frequency)**" ile ilgili  tanıtım aşağıda verilmiştir:
+
+Bu sentetik değişken, rassal sayı üretimi kullanılarak oluşturulmuştur.
+**set.seed(123)** komutu, rassal sayıların tekrarlanabilirliğini sağlamak için kullanılmıştır. Bu, aynı seed değeri kullanıldığında her zaman aynı rassal sayıların üretilmesini sağlar.
+    **rnorm(nrow(myDF), mean = 10, sd = 5)** komutu, normal dağılıma sahip rassal sayıları üretir. Bu durumda, ortalama (mean) değeri 10, standart sapma (sd) değeri 5 olarak belirlenmiştir.
+    **myDF$Credit_Card_Usage_Frequency[myDF$Credit_Card_Usage_Frequency < 0] <- 0** komutu, olumsuz değerleri sıfıra çevirir. Bu işlem, kullanım sıklığı negatif olan olası değerlere karşı bir önlem olarak eklenmiştir.
+    head(myDF) komutu, veri setinin ilk birkaç satırını gösterir ve eklenen sentetik değişkeni görüntüler.
+
+Bu sentetik değişken, müşterilerin kredi kartı kullanma sıklığını temsil eder. Ortalama değeri 10 ve standart sapması 5 olarak belirlenmiştir. Bu değişken, müşterilerin kredi kartı kullanma alışkanlıklarını simüle etmek amacıyla eklenmiştir.
+
+
+### Credit_Card_Usage_Frequency için ilk 10 satırı gösterme
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+head(myDF$Credit_Card_Usage_Frequency, 10)
+```
+
