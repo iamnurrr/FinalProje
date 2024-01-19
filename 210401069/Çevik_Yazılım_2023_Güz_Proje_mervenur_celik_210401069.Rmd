@@ -189,3 +189,60 @@ ggplot(important_data, aes(x = Income_Category, y = Customer_Age, color = Income
 ```
 
     Yaşa göre gelir kategorisinin nokta grafikleri, her bir kategorinin ortalama yaşını da gösterir.
+
+# Q4: Veri Seti Ön İşlemesi
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+myDF$Income_Category <- as.numeric(factor(myDF$Income_Category, levels = unique(myDF$Income_Category)))
+```
+
+    factor() fonksiyonu, "Income_Category" sütununu faktör (kategorik) bir değişken olarak dönüştürür.
+
+### Kategorik değişkenlerin factor'a çevrilmesi
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+myDF$Education_Level <- as.factor(myDF$Education_Level)
+myDF$Marital_Status <- as.factor(myDF$Marital_Status)
+myDF$Card_Category <- as.factor(myDF$Card_Category)
+```
+
+    "Education_Level,"  "Marital_Status," ve "Card_Category" sütunları faktör tipine dönüştürülmüştür.
+
+### Aykırı değerleri belirleme
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+outliers <- boxplot.stats(myDF$Customer_Age)$out
+```
+
+     "Customer_Age" sütunundaki aykırı değerler belirlenmiştir.
+
+### Aykırı değerleri ortalama ile değiştirme
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+myDF$Customer_Age[myDF$Customer_Age %in% outliers] <- mean(myDF$Customer_Age, na.rm = TRUE)
+```
+
+    "Customer_Age" sütunundaki aykırı değerler belirlenmiş ve bunlar ortalama ile değiştirilmiştir.
+
+### "Income_Category" sütununu faktör olarak dönüştürme
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+myDF$Income_Category <- as.factor(myDF$Income_Category)
+
+
+```
+### "Income_Category" sütununun değerlerini kontrol etme
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+levels(myDF$Income_Category)
+```
+
+### Dönüşüm sonrası data frame'i gösterme
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+head(myDF)
+
+```
+
